@@ -1,0 +1,358 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "https://schema.hiloenergie.com/json/v1/demandresponse.schema.json",
+    "title": "Demand Response Device Schedule",
+    "description": "Hilo Energie Inc - Demand Response Single Device Plan Schema (JSON v1)",
+    "$comment": "Rel31.20231012 (This schema is not yet stable for v1)",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "eventId": {
+            "title": "Demand Reponse Event identifier",
+            "description": "Hilo identifier for this Demand Response event. This will remain constant for the lifetime of the event.",
+            "type": "string",
+            "format": "uuid"
+        },
+        "lastModifiedDate": {
+            "title": "Last modified date of the event",
+            "description": "Date of last modification of the this device's plan. Used to determine if the plan has been updated since the last time it was retrieved.",
+            "$ref": "#/$defs/FieldTimestamp"
+        },
+        "body": {
+            "title": "Demand Response message body",
+            "description": "The body of the message may contain one of the following types: EventScheduled, EventStarted, EventCompleted, EventCanceled, EventAmended, DevicePlan",
+            "oneOf": [
+                {
+                    "$ref": "#/$defs/EventScheduled"
+                },
+                {
+                    "$ref": "#/$defs/EventStarted"
+                },
+                {
+                    "$ref": "#/$defs/EventCompleted"
+                },
+                {
+                    "$ref": "#/$defs/EventCanceled"
+                },
+                {
+                    "$ref": "#/$defs/EventAmended"
+                },
+                {
+                    "$ref": "#/$defs/DevicePlan"
+                }
+            ]
+        }
+    },
+    "required": [
+        "eventId",
+        "lastModifiedDate",
+        "body"
+    ],
+    "$defs": {
+        "Command": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "parameter": {
+                    "title": "Command parameter",
+                    "description": "The parameter to be sent to the device. The type of parameter depends on the command type.",
+                    "oneOf": [
+                        {
+                            "$ref": "#/$defs/ParameterNumeric"
+                        },
+                        {
+                            "$ref": "#/$defs/ParameterString"
+                        },
+                        {
+                            "$ref": "#/$defs/ParameterBoolean"
+                        },
+                        {
+                            "$ref": "#/$defs/ParameterCustom"
+                        }
+                    ]
+                },
+                "start": {
+                    "title": "Command start time",
+                    "description": "The time at which the command should be executed.",
+                    "$ref": "#/$defs/FieldTimestamp"
+                },
+                "end": {
+                    "$comment": "This field is not yet supported.",
+                    "title": "Command end time (optional)",
+                    "description": "The time at which the command should be completed. If not specified, the command is assumed to be instantaneous.",
+                    "$ref": "#/$defs/FieldTimestamp"
+                }
+            },
+            "required": [
+                "parameter",
+                "start"
+            ],
+            "title": "Command",
+            "description": "Command for given command type"
+        },
+        "ParameterCustom": {
+            "type": "object",
+            "additionalProperties": false,
+            "title": "Custom Parameter",
+            "description": "Custom parameter for given command type. Payload is arbitrary JSON.",
+            "properties": {
+                "payload": {
+                    "title": "Payload",
+                    "description": "JSON payload for custom parameter.",
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            },
+            "required": [
+                "payload"
+            ]
+        },
+        "ParameterNumeric": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "value": {
+                    "type": "number",
+                    "multipleOf": 0.5
+                },
+                "unit": {
+                    "oneOf": [
+                        {
+                            "title": "Other",
+                            "type": "string",
+                            "enum": [
+                                "percent",
+                                "W",
+                                "kW",
+                                "MW",
+                                "kWh",
+                                "MWh"
+                            ]
+                        },
+                        {
+                            "title": "Temperature",
+                            "type": "string",
+                            "enum": [
+                                "C",
+                                "F",
+                                "K"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "value",
+                "unit"
+            ],
+            "title": "Numeric Parameter",
+            "description": "Numeric parameter for given command type"
+        },
+        "ParameterString": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "value": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "value"
+            ],
+            "title": "String Parameter",
+            "description": "String parameter for given command type"
+        },
+        "ParameterBoolean": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "value": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "value"
+            ],
+            "title": "Boolean Parameter",
+            "description": "Boolean parameter for given command type"
+        },
+        "FieldTimestamp": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "EventScheduled": {
+            "type": "object",
+            "additionalProperties": false,
+            "title": "EventScheduled",
+            "description": "A Demand Response event has been scheduled. The event will start at the given start time and end at the given end time.",
+            "properties": {
+                "event": {
+                    "const": "scheduled"
+                },
+                "start": {
+                    "title": "Start time",
+                    "description": "The time at which the event will start.",
+                    "$ref": "#/$defs/FieldTimestamp"
+                },
+                "end": {
+                    "title": "End time",
+                    "description": "The time at which the event will end.",
+                    "$ref": "#/$defs/FieldTimestamp"
+                }
+            },
+            "required": [
+                "event",
+                "start",
+                "end"
+            ]
+        },
+        "EventStarted": {
+            "type": "object",
+            "additionalProperties": false,
+            "title": "EventStarted",
+            "description": "This Demand Response event has started.",
+            "properties": {
+                "event": {
+                    "const": "started"
+                },
+                "start": {
+                    "title": "Start time",
+                    "description": "The time at which the event started.",
+                    "$ref": "#/$defs/FieldTimestamp"
+                }
+            },
+            "required": [
+                "event",
+                "start"
+            ]
+        },
+        "EventCompleted": {
+            "type": "object",
+            "additionalProperties": false,
+            "title": "EventCompleted",
+            "description": "This Demand Response event has completed.",
+            "properties": {
+                "event": {
+                    "const": "completed"
+                },
+                "end": {
+                    "title": "End time",
+                    "description": "The time at which the event completed.",
+                    "$ref": "#/$defs/FieldTimestamp"
+                }
+            },
+            "required": [
+                "event",
+                "end"
+            ]
+        },
+        "EventCanceled": {
+            "type": "object",
+            "additionalProperties": false,
+            "title": "EventCanceled",
+            "description": "This Demand Response event has been canceled.",
+            "properties": {
+                "event": {
+                    "const": "canceled"
+                },
+                "end": {
+                    "title": "End time",
+                    "description": "The time at which the event was canceled.",
+                    "$ref": "#/$defs/FieldTimestamp"
+                },
+                "reason": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            },
+            "required": [
+                "event",
+                "end",
+                "reason"
+            ]
+        },
+        "EventAmended": {
+            "$comment": "This event is not yet supported.",
+            "type": "object",
+            "additionalProperties": false,
+            "title": "EventAmended",
+            "description": "This Demand Response event has been amended. This event is not yet suppported.",
+            "properties": {
+                "event": {
+                    "const": "amended"
+                },
+                "reason": {
+                    "title": "Reason",
+                    "description": "Reason for the amendment.",
+                    "type": "string",
+                    "minLength": 1
+                }
+            },
+            "required": [
+                "event",
+                "reason"
+            ]
+        },
+        "DevicePlan": {
+            "type": "object",
+            "additionalProperties": false,
+            "title": "DevicePlan",
+            "description": "A Demand Response plan for a single device.",
+            "properties": {
+                "deviceId": {
+                    "title": "Device identifier",
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Target device identifier as defined by the integrator."
+                },
+                "deviceType": {
+                    "title": "Device type",
+                    "description": "Type of device targeted by this plan. This is purely informational.",
+                    "type": "string",
+                    "enum": [
+                        "thermostat",
+                        "waterHeater",
+                        "chargingPoint",
+                        "switch"
+                    ]
+                },
+                "commandType": {
+                    "title": "Command type",
+                    "description": "Type of command to be executed. This may provide information on how to interpret the command parameter.",
+                    "type": "string",
+                    "enum": [
+                        "onOff",
+                        "heatingSetpointDelta",
+                        "heatingSetpointAbsolute",
+                        "maximumPowerLimit"
+                    ]
+                },
+                "commands": {
+                    "title": "Command list",
+                    "description": "List of commands to be executed in order of their timestamps. Array order is insignificant.",
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "title": "Commands",
+                        "$ref": "#/$defs/Command"
+                    }
+                },
+                "testMode": {
+                    "title": "Test mode flag",
+                    "description": "If true, the device should not execute the commands but should instead perhaps log them. This is used for testing purposes, and is typically not used in production.",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ],
+                    "default": false
+                }
+            },
+            "required": [
+                "commandType",
+                "commands",
+                "deviceId",
+                "deviceType"
+            ]
+        }
+    }
+}
