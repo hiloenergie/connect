@@ -2,3 +2,5 @@
 Repository for development of public schemas (repo will remain internal until a future date)
 
 The schema for demandresponse v1 is published at https://schema.hiloenergie.com/json/v1/demandresponse.schema.json
+
+The delivery envelope is defined by the CloudEvents 1.0 spec and is published at https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/formats/cloudevents.json
