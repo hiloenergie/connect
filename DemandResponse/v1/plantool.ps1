@@ -17,7 +17,8 @@ param(
     [parameter()]
     $TstatCount = 100,
     [parameter()]
-    $CommandCount = 5)
+    $CommandCount = 5,
+    [switch]$PassThru)
 
 if (-not (Test-Path $OutputPath)) {
     throw "OutputPath '$OutputPath' does not exist"
@@ -59,6 +60,9 @@ $(1..${CommandCount} | foreach-object {
 }
 "@ # end of outer here-string
     $file = [System.IO.Path]::Combine($OutputPath, "tstat-0x0000$($_.ToString('X4')).json")
-    $plan | Out-File -FilePath $file -Encoding UTF8 
+    $plan | ForEach-Object {
+        $_ | Out-File -FilePath $file -Encoding UTF8
+        if ($PassThru) { $_ | ConvertFrom-Json }
+    }
 }
 

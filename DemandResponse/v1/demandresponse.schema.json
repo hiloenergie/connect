@@ -187,6 +187,7 @@
       "description": "A Demand Response event has been scheduled. The event will start at the given start time and end at the given end time.",
       "properties": {
         "event": {
+          "title": "Event type",
           "const": "scheduled"
         },
         "start": {
@@ -213,6 +214,7 @@
       "description": "This Demand Response event has started.",
       "properties": {
         "event": {
+          "title": "Event type",
           "const": "started"
         },
         "start": {
@@ -233,6 +235,7 @@
       "description": "This Demand Response event has completed.",
       "properties": {
         "event": {
+          "title": "Event type",
           "const": "completed"
         },
         "end": {
@@ -253,6 +256,7 @@
       "description": "This Demand Response event has been canceled.",
       "properties": {
         "event": {
+          "title": "Event type",
           "const": "canceled"
         },
         "end": {
@@ -278,6 +282,7 @@
       "description": "This Demand Response event has been amended. Either new and/or updated plan(s), or a device opt out list have been provided.",
       "properties": {
         "event": {
+          "title": "Event type",
           "const": "amended"
         },
         "reason": {
@@ -289,6 +294,7 @@
               "additionalProperties": false,
               "properties": {
                 "amendment": {
+                  "title": "Amendment type",
                   "const": "plansUpdated"
                 }
               },
@@ -303,6 +309,7 @@
               "additionalProperties": false,
               "properties": {
                 "amendment": {
+                  "title": "Amendment type",
                   "const": "deviceOptOut"
                 },
                 "devices": {
