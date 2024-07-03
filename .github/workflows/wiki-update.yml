@@ -10,17 +10,19 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+      with:
+        repository: hiloenergie/schema.wiki
 
     - name: Setup Node.js environment
-      uses: actions/setup-node@v2.4.1
+      uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: '16'
 
     - name: Install dependencies
       run: npm install -g jszip-cli
 
-    - name: Clone wiki
-      run: git clone git@github.com:hiloenergie/schema.wiki.git
+    # - name: Clone wiki
+    #   run: git clone git@github.com:hiloenergie/schema.wiki.git
 
     - name: Get the date
       id: date
@@ -29,11 +31,11 @@ jobs:
     - name: Zip markdown files
       run: jszip -o hilo-connect-r${{ vars.HILO_CONNECT_VERSION }}-${{ steps.date.outputs.date }}.zip schema.wiki/*.md
 
-    - name: Push zip to wiki
-      run: |
-        cd <repo>.wiki
-        git config user.name github-actions
-        git config user.email github-actions@github.com
-        git add hilo-connect-r${{ vars.hilo_connect_version }}.zip
-        git commit -m "Update wiki.zip"
-        git push
+    # - name: Push zip to wiki
+    #   run: |
+    #     cd schema.wiki
+    #     git config user.name github-actions
+    #     git config user.email github-actions@github.com
+    #     git add hilo-connect-r${{ vars.hilo_connect_version }}.zip
+    #     git commit -m "Update wiki.zip"
+    #     git push
