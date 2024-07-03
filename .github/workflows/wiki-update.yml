@@ -31,6 +31,9 @@ jobs:
     - name: Zip markdown files
       run: jszip -o hilo-connect-r${{ vars.HILO_CONNECT_VERSION }}-${{ steps.date.outputs.date }}.zip schema.wiki/*.md
 
+    - name: list files
+      run: ls -l -R
+
     # - name: Push zip to wiki
     #   run: |
     #     cd schema.wiki
