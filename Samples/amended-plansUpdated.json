@@ -1,0 +1,12 @@
+{
+    "$schema": "../DemandResponse/v1/demandresponse.schema.json",
+    "eventId": "33f4e1ce-6198-4a4a-bd97-a2bd731c9f86",
+    "lastModifiedDate": "2024-03-13T00:00:00Z",
+    "body": {
+        "event": "amended",
+        "reason": {
+            "amendment": "deviceOptOut",
+            "devices": ["dev1", "dev2", "dev3"]
+        }
+    }
+}
