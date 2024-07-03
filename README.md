@@ -1,3 +1,7 @@
+# wiki documentation job
+
+[![Pack Wiki Files](https://github.com/hiloenergie/schema/actions/workflows/wiki-update.yml/badge.svg)](https://github.com/hiloenergie/schema/actions/workflows/wiki-update.yml)
+
 # schema
 Repository for development of public schemas (repo will remain internal until a future date)
 
