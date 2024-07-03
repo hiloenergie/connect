@@ -1,4 +1,4 @@
-name: Zip Wiki Files
+name: Pack Wiki Files
 
 on:
   gollum:
@@ -20,7 +20,7 @@ jobs:
       run: npm install -g jszip-cli
 
     - name: Clone wiki
-      run: git clone https://github.com/hiloenergie/schema.wiki.git
+      run: git clone git@github.com:hiloenergie/schema.wiki.git
 
     - name: Get the date
       id: date
