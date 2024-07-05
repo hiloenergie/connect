@@ -2,7 +2,7 @@ name: Pack Wiki Files
 
 on:
   gollum:
-
+      
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,18 +21,21 @@ jobs:
     - name: Install dependencies
       run: npm install -g jszip-cli
 
-    # - name: Clone wiki
-    #   run: git clone git@github.com:hiloenergie/schema.wiki.git
-
     - name: Get the date
       id: date
       run: echo "::set-output name=date::$(date +'%Y%m%d')"
     
     - name: Zip markdown files
-      run: jszip -o hilo-connect-r${{ vars.HILO_CONNECT_VERSION }}-${{ steps.date.outputs.date }}.zip schema.wiki/*.md
+      run: jszip -o hilo-connect-r${{ vars.HILO_CONNECT_VERSION }}-${{ steps.date.outputs.date }}.zip *.md *.png
 
     - name: list files
       run: ls -l -R
+
+    - name: Push zip to wiki
+      uses: actions/artifact@v4
+      with:
+        name: 'hilo-connect-r${{ vars.HILO_CONNECT_VERSION }}-${{ steps.date.outputs.date }}'
+        path: hilo-connect-r${{ vars.HILO_CONNECT_VERSION }}-${{ steps.date.outputs.date }}.zip
 
     # - name: Push zip to wiki
     #   run: |
