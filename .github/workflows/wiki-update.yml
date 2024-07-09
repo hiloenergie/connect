@@ -23,7 +23,8 @@ jobs:
 
     - name: Get the date
       id: date
-      run: echo "::set-output name=date::$(date +'%Y%m%d')"
+      run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+      #run: echo "::set-output name=date::$(date +'%Y%m%d')"
     
     - name: Zip markdown files
       run: jszip -o hilo-connect-r${{ vars.HILO_CONNECT_VERSION }}-${{ steps.date.outputs.date }}.zip *.md *.png
