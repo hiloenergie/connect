@@ -3,7 +3,7 @@
   "$id": "https://schema.hiloenergie.com/json/v1/demandresponse.schema.json",
   "title": "Demand Response Device Schedule",
   "description": "Hilo Energie Inc - Demand Response Single Device Plan Schema (JSON v1)",
-  "$comment": "Rel32.20240318 (This schema is not yet stable for v1)",
+  "$comment": "Rel33.20240719 (This schema is not yet stable for v1)",
   "type": "object",
   "additionalProperties": false,
   "properties": {
@@ -121,12 +121,33 @@
               "title": "Other",
               "type": "string",
               "enum": [
-                "percent",
+                "percent"
+              ]
+            },
+            {
+              "title": "Power",
+              "type": "string",
+              "enum": [
                 "W",
                 "kW",
-                "MW",
+                "MW"
+              ]
+            },
+            {
+              "title": "Energy",
+              "type": "string",
+              "enum": [
+                "Wh",
                 "kWh",
                 "MWh"
+              ]
+            },
+            {
+              "title": "Current",
+              "type": "string",
+              "enum": [
+                "A",
+                "C"
               ]
             },
             {
@@ -354,6 +375,7 @@
           "description": "Type of device targeted by this plan. This is purely informational.",
           "type": "string",
           "enum": [
+            "generic",
             "thermostat",
             "waterHeater",
             "chargingPoint",
@@ -365,10 +387,12 @@
           "description": "Type of command to be executed. This may provide information on how to interpret the command parameter.",
           "type": "string",
           "enum": [
+            "generic",
             "onOff",
             "heatingSetpointDelta",
             "heatingSetpointAbsolute",
-            "maximumPowerLimit"
+            "maximumPowerLimit",
+            "maximumCurrentLimit"
           ]
         },
         "commands": {
