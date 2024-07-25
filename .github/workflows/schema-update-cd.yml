@@ -13,6 +13,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    # Note: The $web container must be manually escaped as \$web in the SAS URL in the secret or this will fail!
     - name: Publish schema file
       run: |
         azcopy copy ./DemandResponse/v1/demandresponse.schema.json "${{ secrets.PUBLIC_SCHEMA_SAS_URL }}"
