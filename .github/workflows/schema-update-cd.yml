@@ -1,0 +1,18 @@
+name: Publish demandresponse.schema.json
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - './DemandResponse/v1/demandresponse.schema.json'
+      
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Publish schema file
+      run: |
+        azcopy copy ./DemandResponse/v1/demandresponse.schema.json "${{ secrets.PUBLIC_SCHEMA_SAS_URL }}"
