@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - './DemandResponse/v1/demandresponse.schema.json'
+      - '**/DemandResponse/v1/demandresponse.schema.json'
       
 jobs:
   upload:
