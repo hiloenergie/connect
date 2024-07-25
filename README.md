@@ -1,8 +1,11 @@
-# wiki documentation job
+# Wiki documentation
 
 [![Pack Wiki Files](https://github.com/hiloenergie/schema/actions/workflows/wiki-update.yml/badge.svg)](https://github.com/hiloenergie/schema/actions/workflows/wiki-update.yml)
 
-# schema
+# Schema
+
+[![Publish demandresponse.schema.json](https://github.com/hiloenergie/schema/actions/workflows/schema-update-cd.yml/badge.svg)](https://github.com/hiloenergie/schema/actions/workflows/schema-update-cd.yml)
+
 Repository for development of public schemas (repo will remain internal until a future date)
 
 The schema for demandresponse v1 (preview) is published at https://schema.hiloenergie.com/json/v1/demandresponse.schema.json
