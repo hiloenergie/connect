@@ -77,9 +77,9 @@
           "$ref": "#/$defs/FieldTimestamp"
         },
         "end": {
-          "$comment": "This field is not yet supported.",
+          "$comment": "Command end time. Usually used on the last instruction.",
           "title": "Command end time (optional)",
-          "description": "The time at which the command should be completed. If not specified, the command is assumed to be instantaneous.",
+          "description": "The time at which the command should be completed. When used on the last instruction, this indicates the end of the instruction set and represents the time where usual programming of the device can pick back up. If not specified, the command is assumed to be instantaneous.",
           "$ref": "#/$defs/FieldTimestamp"
         }
       },
