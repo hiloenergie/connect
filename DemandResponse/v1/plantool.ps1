@@ -28,7 +28,7 @@ if (-not (Test-Path $OutputPath)) {
 $now = Get-Date
 $id = new-guid
 $sched = $now.AddDays(1)
-$when = get-date -year $sched.Year -Month $sched.Month -Day $sched.Day -Hour 4 -Minute 0 -Second 0 
+$when = get-date -year $sched.Year -Month $sched.Month -Day $sched.Day -Hour 10 -Minute 0 -Second 0 
 
 filter rfc3339 { $_.ToString("yyyy-MM-ddTHH:mm:ssZ") }
 
@@ -44,17 +44,49 @@ filter rfc3339 { $_.ToString("yyyy-MM-ddTHH:mm:ssZ") }
         "commandType": "heatingSetpointDelta",
         "deviceType": "thermostat",
         "commands": [
-$(1..${CommandCount} | foreach-object {
-@"
+$(  $CommandArray = 1..$CommandCount
+    for ($i=0; $i -lt $CommandArray.Length; $i++)
+    {
+        if ($i -eq 0)
+        {
+            @"
             {
                 "parameter": {
                     "unit": "C",
-                    "value": $(Get-Random -Minimum 1 -Maximum 5)
+                    "value": $(Get-Random -Minimum -6 -Maximum 2)
                 },
-                "start": "$($when.AddMinutes($_ * 5) | rfc3339)"
+                "start": "$($when | rfc3339)"
             },`r`n
-"@ # end of inner here-string
-        })
+"@ # end of inner here-string   
+        }
+
+        elseif ( (0 -lt $i) -and ( $i -lt $CommandArray.Length-1 ) )
+        {
+            @"
+            {
+                "parameter": {
+                    "unit": "C",
+                    "value": $(Get-Random -Minimum -6 -Maximum 2)
+                },
+                "start": "$($when.AddMinutes($i * 15) | rfc3339)"
+            },`r`n
+"@ # end of inner here-string   
+        }
+
+        elseif ($i -eq $CommandArray.Length -1)
+        {
+            @"
+            {
+                "parameter": {
+                    "unit": "C",
+                    "value": $(Get-Random -Minimum -6 -Maximum 2)
+                },
+                "start": "$($when.AddMinutes($i * 15) | rfc3339)",
+                "end": "$($when.AddMinutes($i * 15 + 15) | rfc3339)"
+            }
+"@ # end of inner here-string   
+        }
+    })
         ]
     }
 }
@@ -65,4 +97,3 @@ $(1..${CommandCount} | foreach-object {
         if ($PassThru) { $_ | ConvertFrom-Json }
     }
 }
-
