@@ -3,9 +3,8 @@
     "eventId": "33f4e1ce-6198-4a4a-bd97-a2bd731c9f86",
     "lastModifiedDate": "2024-03-13T00:00:00Z",
     "body": {
-        "event": "amended",
-        "reason": {
-            "amendment": "plansUpdated"
-        }
+        "event": "scheduled",
+        "start": "2024-03-14T01:00:00Z",
+        "end": "2024-03-14T05:00:00Z"
     }
 }
