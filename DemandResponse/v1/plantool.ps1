@@ -1,14 +1,14 @@
 <#
     .DESCRIPTION
-    Generates a set of demand response plans for a set of devices.
+    Generates a set of demand response plans for a set of devices as a zip file in the current directory. Tested on Powershell 5.1+
     .PARAMETER DeviceType
-    The device type to generate plans for. Supported: tstat, evcharger. 
+    The device type to generate plans for. Supported: thermostat, chargingPoint. 
     .PARAMETER DeviceCount
     The number of devices to generate plans for. Defaults to 100.
     .PARAMETER CommandCount
     The number of commands to generate for each device. Defaults to 5.
     .EXAMPLE
-    .\plantool.ps1 -OutputPath c:\temp\plans [-WhatIf]
+    .\plantool.ps1 -DeviceType thermostat [-WhatIf]
 #>
 [cmdletbinding(SupportsShouldProcess = $true)]
 param(
@@ -33,7 +33,6 @@ $sched = $now.AddDays(1)
 $when = get-date -year $sched.Year -Month $sched.Month -Day $sched.Day -Hour 11 -Minute 0 -Second 0 
 
 filter rfc3339 { $_.ToString("yyyy-MM-ddTHH:mm:ssZ") }
-filter localTime { $_.ToString("yyyy-MM-ddTHH:mm:ss") }
 
 if ($DeviceType -eq "thermostat") {
     $commandType = "heatingSetpointDelta"
@@ -111,5 +110,5 @@ elseif ($DeviceType -eq "chargingPoint") {
     }
 }
 
-Compress-Archive -Path $OutputPath/* ./plans-"$($now | localTime)".zip
+Compress-Archive -Path $OutputPath/* ./plans-"$( Get-Date -Format "yyyy-MM-ddTHH_mm_ss" )".zip
 Remove-Item -Recurse -Force $OutputPath
