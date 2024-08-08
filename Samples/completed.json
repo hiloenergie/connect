@@ -1,9 +1,9 @@
 {
     "$schema": "../DemandResponse/v1/demandresponse.schema.json",
-    "eventId": "38f3b3a8-b2a4-4bd0-9e84-a3c01b8d01b5",
-    "lastModifiedDate": "2023-10-05T18:34:46Z",
+    "eventId": "33f4e1ce-6198-4a4a-bd97-a2bd731c9f86",
+    "lastModifiedDate": "2024-03-14T12:00:00Z",
     "body": {
         "event": "completed",
-        "end": "2023-10-05T20:34:46Z"
+        "end": "2024-03-14T05:00:00Z"
     }
 }
