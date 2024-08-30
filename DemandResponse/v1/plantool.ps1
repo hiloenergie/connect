@@ -7,6 +7,8 @@
     The number of devices to generate plans for. Defaults to 100.
     .PARAMETER CommandCount
     The number of commands to generate for each device. Defaults to 5.
+    .PARAMETER RandomizationInterval
+    The randomization interval to use to spread commands, in minutes. Defaults to 5.
     .EXAMPLE
     .\plantool.ps1 -DeviceType thermostat [-WhatIf]
 #>
@@ -16,6 +18,8 @@ param(
     $DeviceCount = 100,
     [parameter()]
     $CommandCount = 5,
+    [parameter()]
+    $RandomizationInterval = 5,
     [parameter(Mandatory,
     HelpMessage="Enter the device type to generate plans for. Supported: thermostat, chargingPoint.")]
     [ValidateSet("thermostat", "chargingPoint")]
@@ -54,6 +58,8 @@ elseif ($DeviceType -eq "chargingPoint") {
 }
 
 1..${DeviceCount} | foreach-object {
+    $DeviceRandomizationInterval = $RandomizationInterval * 60 / $DeviceCount * ( $_ - 1 )
+
     $plan = [ordered]@{
         "`$schema" = "https://schema.hiloenergie.com/json/v1/demandresponse.schema.json"
         "eventId" = "$($id.guid)"
@@ -75,7 +81,7 @@ elseif ($DeviceType -eq "chargingPoint") {
                     "unit" = "$unit"
                     "value" = $(setValue)
                 }
-                "start" = "$($when | rfc3339)"
+                "start" = "$($when.AddSeconds($DeviceRandomizationInterval) | rfc3339)"
             }
         }
 
@@ -85,7 +91,7 @@ elseif ($DeviceType -eq "chargingPoint") {
                     "unit" = "$unit"
                     "value" = $(setValue)
                 }
-                "start" = "$($when.AddMinutes($i * 15) | rfc3339)"
+                "start" = "$($when.AddMinutes($i * 15).AddSeconds($DeviceRandomizationInterval) | rfc3339)"
             }                
         }
 
@@ -95,8 +101,8 @@ elseif ($DeviceType -eq "chargingPoint") {
                     "unit" = "$unit"
                     "value" = $(setValue)
                 }
-                "start" = "$($when.AddMinutes($i * 15) | rfc3339)"
-                "end" = "$($when.AddMinutes($i * 15 + 15) | rfc3339)"
+                "start" = "$($when.AddMinutes($i * 15).AddSeconds($DeviceRandomizationInterval) | rfc3339)"
+                "end" = "$($when.AddMinutes($i * 15 + 15).AddSeconds($DeviceRandomizationInterval) | rfc3339)"
             }
         }
 
