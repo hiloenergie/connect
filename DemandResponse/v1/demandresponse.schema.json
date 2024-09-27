@@ -3,7 +3,7 @@
   "$id": "https://schema.hiloenergie.com/json/v1/demandresponse.schema.json",
   "title": "Demand Response Device Schedule",
   "description": "Hilo Energie Inc - Demand Response event and single device plan schemas (JSON v1)",
-  "$comment": "Rel34.20240721 (This schema is not yet stable for v1)",
+  "$comment": "Rel36.20240927",
   "type": "object",
   "additionalProperties": false,
   "properties": {
@@ -41,7 +41,8 @@
           "$ref": "#/$defs/DevicePlan"
         }
       ]
-    }
+    },
+    "$schema": {}
   },
   "required": [
     "eventId",
@@ -210,14 +211,24 @@
           "title": "Event type",
           "const": "scheduled"
         },
+        "preheat": {
+          "title": "Preheat start time",
+          "description": "The earliest time for which an instruction might be sent for any device that participates in the event.",
+          "$ref": "#/$defs/FieldTimestamp"
+        },
         "start": {
           "title": "Start time",
-          "description": "The time at which the event will start.",
+          "description": "The time at which the event will start. Participants in the event should start to reduce their consumption.",
           "$ref": "#/$defs/FieldTimestamp"
         },
         "end": {
           "title": "End time",
-          "description": "The time at which the event will end.",
+          "description": "The time at which the event will end. Participants in the event can gradually pick up usual consumption.",
+          "$ref": "#/$defs/FieldTimestamp"
+        },
+        "recovery": {
+          "title": "Recovery end time",
+          "description": "The latest time for which an instruction might be sent for any device that participates in the event.",
           "$ref": "#/$defs/FieldTimestamp"
         }
       },
