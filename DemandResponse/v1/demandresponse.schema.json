@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2019-09/schema",
-  "$id": "https://schema.hiloenergie.com/json/v1.1/demandresponse.schema.json",
+  "$id": "https://schema.hiloenergie.com/json/next-version/demandresponse.schema.json",
   "title": "Demand Response Device Schedule",
-  "description": "Hilo Energie Inc - Demand Response event and single device plan schemas (JSON v1.1)",
-  "$comment": "Rel1.20241004",
+  "description": "Hilo Energie Inc - Demand Response event and single device plan schemas (JSON v1)",
+  "$comment": "under-development",
   "type": "object",
   "additionalProperties": false,
   "properties": {
