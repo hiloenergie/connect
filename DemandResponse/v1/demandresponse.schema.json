@@ -1,9 +1,9 @@
 {
   "$schema": "https://json-schema.org/draft/2019-09/schema",
-  "$id": "https://schema.hiloenergie.com/json/v1/demandresponse.schema.json",
+  "$id": "https://schema.hiloenergie.com/json/v1.1/demandresponse.schema.json",
   "title": "Demand Response Device Schedule",
-  "description": "Hilo Energie Inc - Demand Response event and single device plan schemas (JSON v1)",
-  "$comment": "Rel36.20240927",
+  "description": "Hilo Energie Inc - Demand Response event and single device plan schemas (JSON v1.1)",
+  "$comment": "Rel1.20241004",
   "type": "object",
   "additionalProperties": false,
   "properties": {
@@ -41,6 +41,12 @@
           "$ref": "#/$defs/DevicePlan"
         }
       ]
+    },
+    "sasToken": {
+      "title": "SAS token needed to obtain files from storage account",
+      "description": "This token accompanies a URI in the subject field of the wrapping CloudEvent. The URI and the SAS token need to be combined to be able to access the accompying file.",
+      "type": "string",
+      "minLength": 1
     },
     "$schema": {}
   },
@@ -211,8 +217,8 @@
           "title": "Event type",
           "const": "scheduled"
         },
-        "preheat": {
-          "title": "Preheat start time",
+        "preparation": {
+          "title": "Start time of the preparation of the event",
           "description": "The earliest time for which an instruction might be sent for any device that participates in the event.",
           "$ref": "#/$defs/FieldTimestamp"
         },
@@ -227,7 +233,7 @@
           "$ref": "#/$defs/FieldTimestamp"
         },
         "recovery": {
-          "title": "Recovery end time",
+          "title": "End time of the recovery after the event",
           "description": "The latest time for which an instruction might be sent for any device that participates in the event.",
           "$ref": "#/$defs/FieldTimestamp"
         }
